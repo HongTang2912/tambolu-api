@@ -6,6 +6,7 @@ const Neo4jConnection = require('./Neo4jConnection')
 const schedule = require('node-schedule');
 
 const app = express();
+const port = process.env.PORT || 8000;
 
 app.use(cors())
 console.log('SERVER RUNNING.....');
@@ -64,4 +65,4 @@ app.get("/api/crawler/lammusic", async function(req, res) {
     //console.log(Neo4jConnection.read());
 })
 
-app.listen(8080, console.log("Server running on http://localhost:8080/api/crawler/lammusic"))
+app.listen(port, console.log(`Server running on ${port}/api/crawler/lammusic`))
