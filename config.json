@@ -1,0 +1,77 @@
+{
+    "NEO4J_DB_CONFIG": {
+        "PATH": "bolt://localhost:7687",
+        "USERNAME": "neo4j",
+        "PASSWORD": "0938865813"
+    },
+    "LAMMUSIC_URL": {
+       
+        "HOME_PAGE": [
+            {
+                "name": "Điện thoại và phụ kiện",
+                "url": "https://linhkienlammusic.com/dien-thoai-va-phu-kien",
+                "limit_page": 36
+            },
+            { 
+                "name": "Máy tính và phụ kiện",
+                "url": "https://linhkienlammusic.com/may-tinh-va-phu-kien",
+                "limit_page": 13
+            },
+            {
+                "name": "Thiết bị điện",
+                "url": "https://linhkienlammusic.com/thiet-bi-dien",
+                "limit_page": 17
+            },
+            {
+                "name": "Thời trang và phụ kiện",
+                "url": "https://linhkienlammusic.com/thoi-trang-va-phu-kien",
+                "limit_page": 22
+            },
+            {
+                "name": "Nhà cửa và đời sống",
+                "url": "https://linhkienlammusic.com/nha-cua-va-doi-song",
+                "limit_page": 50
+            },
+            {
+                "name": "Sức khỏe và làm đẹp",
+                "url":"https://linhkienlammusic.com/suc-khoe-va-lam-dep",
+                "limit_page": 30
+            },
+            {
+                "name": "Đồ chơi mẹ và bé",
+                "url": "https://linhkienlammusic.com/do-choi-me-va-be",
+                "limit_page": 15
+            },
+            {
+                "name": "Phụ kiện đồ chơi xe",
+                "url": "https://linhkienlammusic.com/phu-kien-do-choi-xe",
+                "limit_page": 8
+            },
+            {   
+                "name": "Điện tử và gia dụng",
+                "url": "https://linhkienlammusic.com/dien-tu-va-gia-dung",
+                "limit_page": 19
+            },
+            {
+                "name": "Hàng tiêu dùng và thực phẩm",
+                "url":"https://linhkienlammusic.com/hang-tieu-dung-va-thuc-pham",
+                "limit_page": 6
+            }
+        ]
+       
+    },
+
+    "BROWSER_CONFIG": {
+        "TIMEOUT": 900000,
+        "HEADLESS_SETTING":true,
+        "WAIT_UNTIL": "networkidle2",
+        "VIEWPORT": {
+            "WIDTH": 1500,
+            "HEIGHT": 700
+        }
+    },
+   
+    "DELAY": 100,
+    "SCROLL_HEIGHT": 100
+
+}
