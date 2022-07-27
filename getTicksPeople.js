@@ -59,7 +59,7 @@ const getData = async () => {
         
     } finally {
         
-        await neo4jImport.write(data);
+        await neo4jImport.write(data.map(obj => JSON.stringify(obj))).map(str => JSON.parse(str));
     }
     
 }

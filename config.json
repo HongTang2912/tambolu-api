@@ -1,8 +1,9 @@
 {
     "NEO4J_DB_CONFIG": {
-        "PATH": "bolt://localhost:7687",
+        "PATH": "neo4j+s://3fbf15b4.databases.neo4j.io",
         "USERNAME": "neo4j",
-        "PASSWORD": "0938865813"
+        "PASSWORD": "MVAfvD9JFZTONsiflsvMJLEAS8STq2OoGBjfpGyp0IM",
+        "AURA_INSTANCENAME":"Tambolu_web"
     },
     "LAMMUSIC_URL": {
        
