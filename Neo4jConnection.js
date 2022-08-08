@@ -64,7 +64,7 @@ async function writeData(product) {
         );
 
         await session.run(
-          "MERGE (a:ProductReview {review_id: $review_id, comment_id: $cid, views: $views})",
+          "MERGE (a:ProductReview {comment_id: $cid, views: $views})",
           {
             title: product[i].title,
             cid: [],

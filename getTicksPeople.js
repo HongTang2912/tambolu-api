@@ -42,7 +42,7 @@ const getData = async () => {
   } finally {
     const filteredData = data.map((obj) => JSON.stringify(obj)).map((str) => JSON.parse(str));
     await neo4jImport.write(filteredData)
-    await fs.writeFile('./TWITTER_API/linksProduct.json', data.map((obj) => JSON.stringify(obj.linkTo)), 'utf8');
+    await fs.writeFile('./TWITTER_API/linksProduct.json', data.map((obj) => JSON.stringify(obj.linkTo)));
   }
 };
 
