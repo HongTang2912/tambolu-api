@@ -31,20 +31,19 @@ async function createCategory(product) {
 async function writeData(product) {
   const driver = neo4j.driver(PATH, neo4j.auth.basic(USERNAME, PASSWORD));
   const session = driver.session();
-  let d =[];
+  let d = [];
   try {
     readData().then((res) => {
-      d.push(...res)
-    })
+      d.push(...res);
+    });
     for (var i = 0; i < product.length; i++) {
       if (
         product[i].imgsrc != "" &&
         !d.some((a) => a.link == product[i].link)
       ) {
         await session.run(
-          "CREATE (a:Product {id: $id, link: $link, imgSrc: $imgSrc, title: $title, price: $price, refund: $refund})",
+          "MERGE (a:Product {link: $link, imgSrc: $imgSrc, title: $title, price: $price, refund: $refund})",
           {
-            id: i.toString(16),
             link: product[i].link,
             imgSrc: product[i].imgsrc,
             title: product[i].title,
@@ -54,44 +53,32 @@ async function writeData(product) {
         );
 
         await session.run(
-          `MATCH (a:Product {id: $id, link: $link, imgSrc: $imgSrc, title: $title, price: $price, refund: $refund}), 
+          `MATCH (a:Product), 
           (b:Category {name: $category})
-          CREATE (a) -[r:PRODUCT_OF]-> (b)`,
+          WHERE a.title = $title
+          MERGE (a) -[r:PRODUCT_OF]-> (b)`,
           {
-            id: i.toString(16),
-            link: product[i].link,
-            imgSrc: product[i].imgsrc,
             title: product[i].title,
-            price: product[i].price,
-            refund: product[i].refund,
             category: product[i].category,
           }
         );
 
         await session.run(
-          "CREATE (a:ProductReview {id: $id, comment_id: $cid, rating_point: $rating_point, views: $views})",
+          "MERGE (a:ProductReview {review_id: $review_id, comment_id: $cid, views: $views})",
           {
-            id: i.toString(16),
+            title: product[i].title,
             cid: [],
-            rating_point: [0, 0, 0, 0, 0],
             views: 0,
           }
         );
-        
+
         await session.run(
-          `MATCH (a:Product {id: $id, link: $link, imgSrc: $imgSrc, title: $title, price: $price, refund: $refund}), 
-          (b:ProductReview {id: $id, comment_id: $cid, rating_point: $rating_point, views: $views})
-          CREATE (a) <-[r:REVIEW_OF]- (b)`,
+          `MATCH (a:Product), 
+          (b:ProductReview)
+          WHERE a.title = $title AND b.title = $title
+          MERGE (a) <-[r:REVIEW_OF]- (b)`,
           {
-            id: i.toString(16),
-            link: product[i].link,
-            imgSrc: product[i].imgsrc,
             title: product[i].title,
-            price: product[i].price,
-            refund: product[i].refund,
-            cid: [],
-            rating_point: [0, 0, 0, 0, 0],
-            views: 0,
           }
         );
       }

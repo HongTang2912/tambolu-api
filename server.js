@@ -11,8 +11,6 @@ app.use(cors())
 console.log('SERVER RUNNING.....');
 
 function run() {
-
-
     writeIntoDatabase.getData();
 }
 run();
@@ -56,7 +54,7 @@ app.get("/api/crawler/lammusic", async function(req, res) {
     .then(function (result) {
         const data = pagination(result, page, limit)
         data.then(function (data) {
-
+            
             res.send(data)
         })
     })
