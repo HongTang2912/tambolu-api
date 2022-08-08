@@ -37,51 +37,51 @@ async function writeData(product) {
       d.push(...res);
     });
     for (var i = 0; i < product.length; i++) {
-      if (
-        product[i].imgsrc != "" &&
-        !d.some((a) => a.link == product[i].link)
-      ) {
-        await session.run(
-          "MERGE (a:Product {link: $link, imgSrc: $imgSrc, title: $title, price: $price, refund: $refund})",
-          {
-            link: product[i].link,
-            imgSrc: product[i].imgsrc,
-            title: product[i].title,
-            price: product[i].price,
-            refund: product[i].refund,
-          }
-        );
+      
+      const node = await session.run(
+        "MERGE (a:Product {link: $link, imgSrc: $imgSrc, title: $title, price: $price, refund: $refund}) return ID(a)",
+        {
+          link: product[i].link,
+          imgSrc: product[i].imgsrc,
+          title: product[i].title,
+          price: product[i].price,
+          refund: product[i].refund,
+        }
+      );
 
-        await session.run(
-          `MATCH (a:Product), 
-          (b:Category {name: $category})
-          WHERE a.title = $title
-          MERGE (a) -[r:PRODUCT_OF]-> (b)`,
-          {
-            title: product[i].title,
-            category: product[i].category,
-          }
-        );
+      
 
-        await session.run(
-          "MERGE (a:ProductReview {comment_id: $cid, views: $views})",
-          {
-            title: product[i].title,
-            cid: [],
-            views: 0,
-          }
-        );
+      await session.run(
+      "MERGE (a:ProductReview {product_id: $product_id, comment_id: $cid, views: $views})",
+        {
+          product_id: node.records[0].get(0).properties,
+          cid: [],
+          views: 0,
+        }
+      );
 
-        await session.run(
-          `MATCH (a:Product), 
-          (b:ProductReview)
-          WHERE a.title = $title AND b.title = $title
-          MERGE (a) <-[r:REVIEW_OF]- (b)`,
-          {
-            title: product[i].title,
-          }
-        );
-      }
+      await session.run(
+        `MATCH (a:Product), 
+        (b:Category {name: $category})
+        WHERE a.title = $title
+        MERGE (a) -[r:PRODUCT_OF]-> (b)`,
+        {
+          title: product[i].title,
+          category: product[i].category,
+        }
+      );
+
+      await session.run(
+        `MATCH (a:Product), 
+        (b:ProductReview)
+        WHERE a.title = $title AND b.product_id = $product_id
+        MERGE (a) <-[r:REVIEW_OF]- (b)`,
+        {
+          product_id: node.records[0].get(0).properties,
+          title: product[i].title,
+        }
+      );
+    
       // await console.log(product[i]);
     }
     await console.log("writing done");
