@@ -18,6 +18,7 @@
     "neo4j-driver": "^4.4.5",
     "node-schedule": "^2.1.0",
     "nodemon": "^3.0.1",
+    "path": "^0.12.7",
     "puppeteer": "^13.7.0",
     "puppeteer-autoscroll-down": "^1.1.1"
   }

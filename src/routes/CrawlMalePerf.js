@@ -31,7 +31,7 @@ router.get("/men-perfume", async (req, res) => {
     res.status(400).send("Bad request");
   }
   try {
-    for (let i = from*1; i <= to*1; i++) {
+    for (let i = from * 1; i <= to * 1; i++) {
       const products = await browser
         .crawl(
           `${pageConfig.url}?q=${pageConfig.query.q}&page=${i}&view=${pageConfig.query.view}`,
@@ -51,23 +51,18 @@ router.get("/men-perfume", async (req, res) => {
   } catch (err) {
     console.log("Server has caused an errror: ", err);
   } finally {
-    var d = new Date(),
-      dformat =
-        [
-          (d.getMonth() + 1).padLeft(),
-          d.getDate().padLeft(),
-          d.getFullYear(),
-        ].join("/") +
-        " " +
-        [
-          d.getHours().padLeft(),
-          d.getMinutes().padLeft(),
-          d.getSeconds().padLeft(),
-        ].join(":");
+    const dt = new Date();
+    const padL = (nr, len = 2, chr = `0`) => `${nr}`.padStart(2, chr);
+
+    const dformat = `${padL(dt.getMonth() + 1)}-${padL(
+      dt.getDate()
+    )}-${dt.getFullYear()}_${padL(dt.getHours())}-${padL(
+      dt.getMinutes()
+    )}-${padL(dt.getSeconds())}`;
     await browser.closeBrowser();
     res.status(200).send(data);
     fs.writeFileSync(
-      `data/men_perfume${dformat}.json`,
+      `data/men_perfume_${dformat}.json`,
       JSON.stringify(data),
       "utf-8"
     );
