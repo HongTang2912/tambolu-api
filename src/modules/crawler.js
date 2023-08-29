@@ -1,6 +1,7 @@
 const puppeteer = require("puppeteer");
 const colorLog = require("./coloringMessage");
-
+const path = require("path");
+const fs = require("fs")
 class Browser {
   constructor(timeout, headless, waitUntil, viewPort) {
     this.timeout = timeout;
@@ -41,6 +42,7 @@ class Browser {
           title: item.querySelector(".product-name").innerText,
           prices: item.querySelector(".price.product-price").innerText,
           access_link: item.querySelector(".product-name a").href,
+          image_url: "https://"+item.querySelector(".product-thumbnail source").srcset
         });
       });
       return items;
@@ -59,7 +61,7 @@ class Browser {
     return data;
   };
 
-  downloadImage = async (url, filename) => {
+  downloadImage = async (url, title, destination) => {
     // Launch a browser instance (non-headless)
     const browser = await puppeteer.launch();
 
@@ -77,14 +79,17 @@ class Browser {
     const imageContent = await imageResponse.buffer();
     const fileExtension = path.extname(imageUrl);
 
+    const filename = enFile(title);
+
     // Specify the destination path to save the image
-    const imagePath = path.join(__dirname, filename + fileExtension);
+    const imagePath = `${destination}${filename}${fileExtension}`.slice(0, `${destination}${filename}${fileExtension}`.indexOf("?")) ;
 
     // Save the image to the specified path
     fs.writeFileSync(imagePath, imageContent);
 
     console.log("Image downloaded successfully:", imagePath);
 
+    return imagePath;
     // Close the browser
     await browser.close();
   };
@@ -121,6 +126,25 @@ async function autoScroll(page) {
       }, 100);
     });
   });
+}
+
+function enFile (str) {
+  const replaceSpace = str.replace(/\s+/g, '-').toLowerCase();
+  let fileString = replaceSpace;
+    fileString = fileString.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
+    fileString = fileString.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
+    fileString = fileString.replace(/ì|í|ị|ỉ|ĩ/g, "i");
+    fileString = fileString.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o");
+    fileString = fileString.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
+    fileString = fileString.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
+    fileString = fileString.replace(/đ/g, "d");
+    // Some system encode vietnamese combining accent as individual utf-8 characters
+    fileString = fileString.replace(/\u0300|\u0301|\u0303|\u0309|\u0323/g, ""); // Huyền sắc hỏi ngã nặng 
+    fileString = fileString.replace(/\u02C6|\u0306|\u031B/g, ""); // Â, Ê, Ă, Ơ, Ư
+
+    
+
+    return fileString;
 }
 
 function delay(ms) {

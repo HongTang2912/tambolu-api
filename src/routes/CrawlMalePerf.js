@@ -41,8 +41,10 @@ router.get("/men-perfume", async (req, res) => {
         .then((res) => res);
 
       for (let j = 0; j < products.length; j++) {
+        
         products[j] = {
           ...products[j],
+          image_url: await browser.downloadImage(products[j].image_url, products[j].title, 'upload/images/'),
           description: await browserDetail.crawl(products[j]),
         };
       }
@@ -51,23 +53,29 @@ router.get("/men-perfume", async (req, res) => {
   } catch (err) {
     console.log("Server has caused an errror: ", err);
   } finally {
-    const dt = new Date();
-    const padL = (nr, len = 2, chr = `0`) => `${nr}`.padStart(2, chr);
-
-    const dformat = `${padL(dt.getMonth() + 1)}-${padL(
-      dt.getDate()
-    )}-${dt.getFullYear()}_${padL(dt.getHours())}-${padL(
-      dt.getMinutes()
-    )}-${padL(dt.getSeconds())}`;
+  
     await browser.closeBrowser();
+
     res.status(200).send(data);
+
     fs.writeFileSync(
-      `data/men_perfume_${dformat}.json`,
+      `data/men_perfume_${formatDate()}.json`,
       JSON.stringify(data),
       "utf-8"
     );
     colorLog(`END`, "magenta");
   }
 });
+
+const formatDate = () => {
+    const dt = new Date();
+    const padL = (nr, len = 2, chr = `0`) => `${nr}`.padStart(2, chr);
+
+    return `${padL(dt.getMonth() + 1)}-${padL(
+      dt.getDate()
+    )}-${dt.getFullYear()}_${padL(dt.getHours())}-${padL(
+      dt.getMinutes()
+    )}-${padL(dt.getSeconds())}`;
+}
 
 module.exports = router;
