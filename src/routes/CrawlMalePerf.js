@@ -6,7 +6,7 @@ const { Browser } = require("../modules/crawler");
 const { BrowserDetail } = require("../modules/crawlDetaily");
 // Configuration file
 const browserConfig = require("../../config.json").BROWSER_CONFIG;
-const pageConfig = require("../../config.json").NUOC_HOA_BLANC.HOME_PAGE[0];
+const pageConfig = require("../../config.json").NUOC_HOA_BLANC.CATEGORY[0];
 
 const router = express.Router();
 
