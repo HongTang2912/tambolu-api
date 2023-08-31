@@ -10,6 +10,16 @@
           "view": "grid"
         },
         "limit_page": 20
+      },
+      {
+        "name": "Nước hoa cho Nữ giới",
+        "url": "https://blanc.com.vn/designer-nu",
+        "query": {
+          "q": "collections:2433031",
+          "page": 1,
+          "view": "grid"
+        },
+        "limit_page": 19
       }
     ]
   },

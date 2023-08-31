@@ -1,12 +1,13 @@
 const express = require("express");
 const colorLog = require("../modules/coloringMessage");
 const fs = require("fs");
+const makeDir = require("make-dir");
 
 const { Browser } = require("../modules/crawler");
 const { BrowserDetail } = require("../modules/crawlDetaily");
 // Configuration file
 const browserConfig = require("../../config.json").BROWSER_CONFIG;
-const pageConfig = require("../../config.json").NUOC_HOA_BLANC.CATEGORY[0];
+const pageConfig = require("../../config.json").NUOC_HOA_BLANC.CATEGORY[1];
 
 const router = express.Router();
 
@@ -24,9 +25,9 @@ const browserDetail = new BrowserDetail(
   browserConfig.VIEWPORT
 );
 
-router.get("/men-perfume", async (req, res) => {
+router.get("/perfume", async (req, res) => {
   let data = [];
-  const { from, to } = req.query;
+  const { from, to, category } = req.query;
   if (from <= 0 || to > pageConfig.limit_page) {
     res.status(400).send("Bad request");
   }
@@ -58,14 +59,17 @@ router.get("/men-perfume", async (req, res) => {
 
     res.status(200).send(data);
 
+    await makeDir(`data/${category}`);
+
     fs.writeFileSync(
-      `data/men_perfume_${formatDate()}.json`,
+      `data/${category}/date_${formatDate()}.json`,
       JSON.stringify(data),
       "utf-8"
     );
     colorLog(`END`, "magenta");
   }
 });
+
 
 const formatDate = () => {
     const dt = new Date();
