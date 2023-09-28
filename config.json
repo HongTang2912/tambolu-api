@@ -2,6 +2,7 @@
   "NUOC_HOA_BLANC": {
     "CATEGORY": [
       {
+        "path": "men_perfume",
         "name": "Nước hoa cho Nam giới",
         "url": "https://blanc.com.vn/designer-nam",
         "query": {
@@ -12,6 +13,7 @@
         "limit_page": 20
       },
       {
+        "path": "women_perfume",
         "name": "Nước hoa cho Nữ giới",
         "url": "https://blanc.com.vn/designer-nu",
         "query": {

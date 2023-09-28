@@ -1,11 +1,11 @@
 const fs = require("fs");
 const path = require("path");
 
-const folderPath = "data";
 
 
-const mergeJsonFiles = () => {
+const mergeJsonFiles = (filename) => {
   const mergedArray = [];
+  const folderPath = `data/${filename}`;
 
   try {
     const files = fs.readdirSync(folderPath);

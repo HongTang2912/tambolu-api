@@ -39,16 +39,17 @@ router.get("/create-category", async (req, res) => {
 });
 
 router.post("/create-product-in-category", async (req, res) => {
-  const { category_name } = req.body;
+  const { path } = req.body;
   res.setHeader("Content-Type", "application/json");
   try {
     colorLog(`Start creating products into categories...`, "yellow");
     const data = [];
-    for (let i = 0; i <= mergeJsonFiles().length; i++) {
-      if (mergeJsonFiles()[i]?.title) {
+    const jsonData = mergeJsonFiles(path);
+    for (let i = 0; i <= jsonData?.length; i++) {
+      if (jsonData[i]?.title) {
         const [extract_vial_price, price] = [
-          mergeJsonFiles()[i]?.prices.split(" - ")[0]?.replace("₫", "") ?? 0,
-          mergeJsonFiles()[i]?.prices.split(" - ")[1]?.replace("₫", "") ?? 0,
+          jsonData[i]?.prices.split(" - ")[0]?.replace("₫", "") ?? 0,
+          jsonData[i]?.prices.split(" - ")[1]?.replace("₫", "") ?? 0,
         ];
         const result = await session.run(
           `MATCH (c:Category {name: $categoryName}) 
@@ -63,21 +64,25 @@ router.post("/create-product-in-category", async (req, res) => {
           RETURN p`,
           {
             // Product params
-            title: mergeJsonFiles()[i]?.title,
-            extract_vial_price: extract_vial_price,
-            price: price,
-            image_url: mergeJsonFiles()[i]?.image_url ?? "",
-            description: mergeJsonFiles()[i]?.description ?? "",
+            title: jsonData[i]?.title,
+            extract_vial_price: extract_vial_price
+              ? parseInt(extract_vial_price?.replace(/\./g, ""))
+              : 0,
+            price: price ? parseInt(price?.replace(/\./g, "")) : 0,
+            image_url: jsonData[i]?.image_url ?? "",
+            description: jsonData[i]?.description ?? "",
 
             // Category params
-            categoryName: category_name,
+            categoryName: config.find((field) => field.path == path)?.name,
           }
         );
         result.records.forEach((record) => {
           console.log(
             `${
               record.get("p").properties.length
-            } records have been import to "Product" node width Category name: "${category_name}"!`
+            } records have been import to "Product" node width Category name: "${
+              config.find((field) => field.path == path)?.name
+            }"!`
           );
           data.push(record.get("p").properties);
         });
@@ -88,7 +93,11 @@ router.post("/create-product-in-category", async (req, res) => {
     res
       .status(200)
       .send(
-        `${data.length} records have been import to "Product" node width Category name: "${category_name}"!`
+        `${
+          data.length
+        } records have been import to "Product" node width Category name: "${
+          config.find((field) => field.path == path)?.name
+        }"!`
       );
   } catch (err) {
     res.status(400).send(`Error request`);
