@@ -1,12 +1,13 @@
 {
-  "name": "lammusic-api",
+  "name": "perf-lab-api",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon --inspect server.js",
-    "dev": "nodemon --inspect server2.js"
+    "server1": "nodemon --inspect server.js",
+    "server2": "nodemon --inspect server2.js",
+    "dev": "concurrently --kill-others \"npm run server1\" \"npm run server2\""
   },
   "author": "",
   "license": "ISC",
@@ -27,5 +28,8 @@
     "path": "^0.12.7",
     "puppeteer": "^13.7.0",
     "puppeteer-autoscroll-down": "^1.1.1"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.1"
   }
 }
