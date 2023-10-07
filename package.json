@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "server1": "nodemon --inspect server.ts",
-    "server2": "ts-node --esm server2.ts",
+    "server2": "ts-node server2.ts",
     "dev": "concurrently --kill-others \"npm run server1\" \"npm run server2\""
   },
   "author": "",

@@ -1,21 +1,11 @@
 {
-  "include": ["**/*"],
-  "exclude": [""],
-  "ts-node": {
-    "esm": true,
-    "experimentalSpecifierResolution": "node"
-  },
+  // other settings..
   "compilerOptions": {
-
-    "target": "es2016",                                  
-    "esModuleInterop": true,                            
-    "forceConsistentCasingInFileNames": true,  
-    "moduleResolution": "node",
-    "module": "ESNext",        
-    "strict": true,                                      
-   
-    "skipLibCheck": true,
-                        
+    // other compiler options...
+    "esModuleInterop": true,
+    "module": "CommonJS", // "module": "CommonJS" should work too
+    "moduleResolution": "Node"
   },
-  
+  "include": ["/**/*.ts"],
+  "exclude": ["node_modules"]
 }
