@@ -1,0 +1,21 @@
+{
+  "include": ["**/*"],
+  "exclude": [""],
+  "ts-node": {
+    "esm": true,
+    "experimentalSpecifierResolution": "node"
+  },
+  "compilerOptions": {
+
+    "target": "es2016",                                  
+    "esModuleInterop": true,                            
+    "forceConsistentCasingInFileNames": true,  
+    "moduleResolution": "node",
+    "module": "ESNext",        
+    "strict": true,                                      
+   
+    "skipLibCheck": true,
+                        
+  },
+  
+}

@@ -24,7 +24,7 @@ app.use("/category", CategoryRouter);
 
 
 // Send images from upload dir API
-app.get("/upload/images/:title", function (req, res) {
+app.get("/upload/images/:title", function (req: { params: { title: any; }; }, res: { sendFile: (arg0: any) => void; }) {
   const { title } = req.params;
   res.sendFile(path.join(__dirname, '/upload/images', title));
 });
