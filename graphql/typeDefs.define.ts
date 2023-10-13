@@ -27,7 +27,7 @@ export const typeDefs: string = `
     username: String!
     password: String!
     email: String!
-    access_token: String! @customResolver(require: "username password email")
+    access_token: String! @customResolver(requires: "username password email")
   }
 
   extend schema @authentication

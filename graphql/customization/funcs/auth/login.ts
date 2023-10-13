@@ -18,6 +18,13 @@ export const authenticate = async (
       console.log(error);
       return 0;
     });
+  if (isMatchedPassword(password, user.password)) return {...user, status: true};
+  return {
+    message: "authenticate failed",
+    status: false
+  };
+};
 
-  return user;
+export const isMatchedPassword = (inputPassword: string, dbPassword: string) => {
+  return inputPassword === dbPassword;
 };

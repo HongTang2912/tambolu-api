@@ -7,7 +7,6 @@ import dotenv from "dotenv";
 dotenv.config();
 const env: any = process.env;
 
-
 export const driver: Driver = neo4j.driver(
   env.DB_URL,
   neo4j.auth.basic(env.DB_USERNAME, env.DB_PASSWORD)
